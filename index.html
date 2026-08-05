@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="eng" dir="ltr">
+<html lang="ar" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Engagment invitation</title>
+<title>دعوة خطوبة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-      
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
 <style>
   :root{
     --bg:     #f6f0e6;
@@ -31,7 +31,7 @@
   }
 
   /* =========================================================
-     ??????: ?????/???? ??????? + ??????????
+     القسم الأول: صورة/فيديو الخلفية + الاسم
      ========================================================= */
   .hero{
     position:relative;
@@ -43,7 +43,6 @@
   .bg-photo{
     position:absolute; inset:0;
     background-size:cover; background-position:center;
-    /* [ADDITION: SMOOTH BACKGROUND] Add transition for smooth movement on scroll */
     transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   .bg-photo.has-photo::after{
@@ -51,28 +50,28 @@
     background:linear-gradient(180deg, rgba(59,42,34,.25) 0%, rgba(59,42,34,.55) 100%);
   }
 
-  /* ????? ??????? - ???? ???? (autoplay/loop) ??????? ?????? ?? ??????? */
   .bg-video{
     position:absolute; inset:0; width:100%; height:100%;
     object-fit:cover; display:none; will-change:transform;
-    /* [ADDITION: SMOOTH BACKGROUND] Add transition for smooth movement on scroll */
     transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   .bg-video.is-active{ display:block; }
+
+  /* تدرج خفيف فوق الفيديو عشان الاسم يبان بس من غير ما يخبي الفيديو */
+  .video-overlay{
+    position:absolute; inset:0; z-index:1;
+    background:linear-gradient(180deg, rgba(30,20,15,.18) 0%, rgba(30,20,15,.5) 100%);
+    pointer-events:none;
+  }
 
   .hero-overlay{
     position:absolute; inset:0; z-index:2;
     background:var(--ink); opacity:0; pointer-events:none;
   }
 
-  .hero-content{ 
-    position:relative; z-index:3; text-align:center; padding: 40px 24px; 
-    /* [ADDITION: NAME ACCESSIBILITY] Add background for the names */
-    background: rgba(59, 42, 34, 0.8); /* Semi-transparent ink background */
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(5px); /* Optional: add a slight blur effect behind the background */
-    max-width: 90%; /* Prevent it from being too wide */
+  .hero-content{
+    position:relative; z-index:3; text-align:center; padding: 40px 24px;
+    max-width: 90%;
     opacity: 0;
     transform: scale(0.9);
     animation: boxReveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.3s;
@@ -86,19 +85,19 @@
   }
 
   .eyebrow-top{
-    font-size:clamp(11px,2vw,13px);
-    letter-spacing:.35em;
-    color:var(--accent);
-    text-transform:uppercase;
+    font-size:clamp(12px,2.4vw,15px);
+    letter-spacing:.15em;
+    color:var(--bg);
+    text-shadow: 0 2px 10px rgba(0,0,0,.55);
     opacity:0; animation:fadeIn .9s ease forwards 1.3s;
     margin-bottom:20px;
   }
 
-  /* ---- ????? ???????? ???????/??????? ---- */
   .flourish{
     display:block; margin:0 auto;
     color:var(--accent);
     opacity:0;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,.4));
   }
   .flourish-top{ width:min(78vw, 300px); height:auto; margin-bottom:4px; }
   .flourish-bottom{ width:min(34vw, 120px); height:auto; margin-top:8px; }
@@ -128,20 +127,19 @@
   .name-line.end{ transform-origin:right; }
   .name-row.show .name-line{ opacity:1; transform:scaleX(1); }
 
-  /* ??????????: ???? Serif ??????? ?? ??? ????? ???? ????? (?? ????? ??????) */
+  /* فونت عربي مزخرف للاسم/الحروف */
   .monogram{
     display:inline-flex; align-items:baseline; justify-content:center;
-    font-family:'Cormorant Garamond', serif;
-    font-weight:500;
-    font-size:clamp(34px, 8vw, 78px);
-    letter-spacing:.05em;
-    text-transform:uppercase;
-    color:var(--bg); /* Use lighter color for better contrast on dark panel background */
+    font-family:'Aref Ruqaa', serif;
+    font-weight:700;
+    font-size:clamp(48px, 11vw, 100px);
+    letter-spacing:.04em;
+    color:var(--bg);
+    text-shadow: 0 4px 18px rgba(0,0,0,.55);
     white-space:nowrap;
   }
-  .monogram .amp{ font-style:italic; color:var(--accent); }
+  .monogram .amp{ font-style:normal; color:var(--accent); }
 
-  /* ?? ??? ?????? ?????? (???? + ???? ?????) ?? ????? ???? ?? ???????? */
   .monogram .rchar{
     display:inline-block;
     opacity:0;
@@ -156,21 +154,22 @@
   .hero-tagline{
     margin-top:28px;
     font-size:clamp(13px,2.2vw,16px);
-    letter-spacing:.28em;
-    text-transform:uppercase;
-    color:var(--bg); /* Use lighter color for better contrast on dark panel background */
+    letter-spacing:.15em;
+    color:var(--bg);
+    text-shadow: 0 2px 10px rgba(0,0,0,.55);
     opacity:0; transform:translateY(8px);
     transition:opacity .7s ease, transform .7s ease;
   }
-  .hero-tagline.show{ opacity:.85; transform:translateY(0); }
+  .hero-tagline.show{ opacity:.95; transform:translateY(0); }
 
   @keyframes fadeIn{ to{ opacity:1; } }
 
   .scroll-cue{
     position:absolute; bottom:34px; left:50%; transform:translateX(-50%);
     z-index:5; display:flex; flex-direction:column; align-items:center; gap:8px;
-    font-size:11px; letter-spacing:.25em; color:var(--ink); opacity:.6;
-    text-transform:uppercase;
+    font-size:11px; letter-spacing:.15em; color:var(--bg);
+    text-shadow: 0 2px 8px rgba(0,0,0,.5);
+    opacity:.85;
   }
   .scroll-cue span{
     width:1px; height:30px; background:linear-gradient(var(--accent), transparent);
@@ -179,7 +178,7 @@
   @keyframes scrollPulse{ 0%{ opacity:.2; } 50%{ opacity:1; } 100%{ opacity:.2; } }
 
   /* =========================================================
-     ??? ????????: ??????? + ??????
+     القسم الثاني: التفاصيل + الخريطة
      ========================================================= */
   .details{
     position:relative;
@@ -198,16 +197,15 @@
   .details.is-visible .reveal:nth-of-type(5){ transition-delay:.65s; }
 
   .eyebrow{
-    font-size:13px; letter-spacing:.35em; text-transform:uppercase;
+    font-size:14px; letter-spacing:.15em;
     color:var(--accent); margin-bottom:22px;
   }
 
   .title{
-    font-family:'Cormorant Garamond', serif;
-    font-weight:500;
-    font-style:italic;
-    font-size:clamp(26px, 4.2vw, 44px);
-    line-height:1.5;
+    font-family:'Aref Ruqaa', serif;
+    font-weight:400;
+    font-size:clamp(26px, 4.6vw, 46px);
+    line-height:1.7;
     max-width:680px;
     color:var(--ink);
     margin-bottom:46px;
@@ -221,22 +219,26 @@
   }
   .dt-block{ text-align:center; }
   .dt-label{
-    font-size:12px; letter-spacing:.3em; text-transform:uppercase;
+    font-size:12px; letter-spacing:.15em;
     color:var(--accent); margin-bottom:10px;
   }
   .dt-value{
-    font-family:'Cormorant Garamond', serif;
-    font-weight:600;
+    font-family:'Aref Ruqaa', serif;
+    font-weight:700;
     font-size:clamp(22px, 3.6vw, 30px);
     color:var(--ink);
-    letter-spacing:.03em;
+    letter-spacing:.02em;
   }
   .dt-divider{
     width:1px; height:42px;
     background:var(--accent);
   }
 
-    /* ================= COUNTDOWN ================= */ .countdown-title{ text-align:center; margin-top:30px; font-size:28px; color:var(--accent); } .countdown{ display:flex; justify-content:center; gap:15px; margin-top:20px; flex-wrap:wrap; } .box{ width:100px; height:110px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:15px; display:flex; flex-direction:column; justify-content:center; align-items:center; } .number{ font-size:32px; font-weight:bold; } .label{ font-size:12px; opacity:0.7; }  
+  .countdown-title{ text-align:center; margin-top:30px; font-size:26px; color:var(--accent); font-family:'Aref Ruqaa', serif; }
+  .countdown{ display:flex; justify-content:center; gap:15px; margin-top:20px; flex-wrap:wrap; }
+  .box{ width:100px; height:110px; background:rgba(176,141,87,0.08); border:1px solid var(--accent); border-radius:15px; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+  .number{ font-size:32px; font-weight:bold; color:var(--ink); }
+  .label{ font-size:12px; opacity:0.7; color:var(--ink); }
 
   .location-map {
     width: 100%;
@@ -255,14 +257,14 @@
 
   .closing{
     margin-top:54px;
-    font-size:15px;
+    font-size:16px;
     color:var(--ink);
-    opacity:.75;
+    opacity:.8;
     max-width:460px;
   }
 
   @media (max-width:640px){
-    .datetime{ 
+    .datetime{
     gap:20px; flex-direction:column; }
     .dt-divider{ width:60px; height:1px; }
     .name-line{ max-width:34px; }
@@ -282,8 +284,9 @@
   playsinline
   preload="auto"
        >
-</video>    
-    
+</video>
+    <div class="video-overlay"></div>
+
     <div class="hero-overlay" id="heroOverlay"></div>
 
     <div class="hero-content">
@@ -316,7 +319,7 @@
       <p class="hero-tagline" id="heroTagline"></p>
     </div>
 
-    <div class="scroll-cue"><span></span>Swipe down</div>
+    <div class="scroll-cue"><span></span>مرر لأسفل</div>
   </section>
 
     <section class="details" id="details">
@@ -333,8 +336,14 @@
         <div class="dt-value" id="timeValue"></div>
       </div>
     </div>
-<!-- COUNTDOWN --> <div class="countdown-title">Our Special Day</div> <div class="countdown"> <div class="box"> <div id="days" class="number">0</div> <div class="label">Days</div> </div> <div class="box"> <div id="hours" class="number">0</div> <div class="label">Hours</div> </div> <div class="box"> <div id="minutes" class="number">0</div> <div class="label">Minutes</div> </div> <div class="box"> <div id="seconds" class="number">0</div> <div class="label">Seconds</div> </div> </div>
-          
+<div class="countdown-title reveal">يوم فرحتنا</div>
+<div class="countdown reveal">
+  <div class="box"> <div id="days" class="number">0</div> <div class="label">يوم</div> </div>
+  <div class="box"> <div id="hours" class="number">0</div> <div class="label">ساعة</div> </div>
+  <div class="box"> <div id="minutes" class="number">0</div> <div class="label">دقيقة</div> </div>
+  <div class="box"> <div id="seconds" class="number">0</div> <div class="label">ثانية</div> </div>
+</div>
+
     <div class="location-map reveal">
       <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110502.61185368595!2d31.188339832873155!3d30.059618471138307!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583fa60b21beeb%3A0x4374c2e36567c963!2sCairo%2C%20Cairo%20Governorate%!5e0!3m2!1sen!2seg!4v1716333671234!5m2!1sen!2seg" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
@@ -343,23 +352,23 @@
 
 <script>
 /* =========================================================
-   CONFIG — ???? ????? ??? ??? ??? ???? ????
+   CONFIG — غير القيم دي بس عشان تتحكم في كل حاجة
    ========================================================= */
 const CONFIG = {
-  nameLeft:  "mohamed",
-  nameRight: "yara",
-  heroTagline: "Engagement party",
-  video: "https://res.cloudinary.com/df5qqg0v0/video/upload/v1782433432/%D8%AD%D9%81%D9%84_%D8%AE%D8%B7%D9%88%D8%A8%D8%A9_%D9%81%D9%8A_%D9%85%D8%B5%D8%B1_%D8%B9%D9%86%D8%AF_202606260211_wzxq6i.mp4",  
-photo: "",
-  eyebrowTop: "With love and happiness",
-  eyebrow: "Details",
-  title: "We invite you to share in the joy of our engagment",
-  dateLabel: "Date",
-  dateValue: "30 august 2026",
-  timeLabel: "At",
-  timeValue: "5:00 PM ",
-  location: "",    
-  closing: "We are waiting for you"
+  nameLeft:  "م",
+  nameRight: "ي",
+  heroTagline: "حفل خطوبة",
+  video: "https://res.cloudinary.com/df5qqg0v0/video/upload/v1785957090/Children_preparing_for_portrait___202608052210_uf0mt5.mp4",
+  photo: "",
+  eyebrowTop: "بكل الحب والسعادة",
+  eyebrow: "التفاصيل",
+  title: "يسعدنا دعوتكم لمشاركتنا فرحة خطوبتنا",
+  dateLabel: "التاريخ",
+  dateValue: "٣٠ أغسطس ٢٠٢٦",
+  timeLabel: "في تمام الساعة",
+  timeValue: "٥:٠٠ مساءً",
+  location: "",
+  closing: "بانتظار حضوركم"
 };
 document.getElementById('eyebrowTop').textContent  = CONFIG.eyebrowTop;
 document.getElementById('heroTagline').textContent = CONFIG.heroTagline;
@@ -379,17 +388,13 @@ if (CONFIG.video) {
   bgVideoEl.src = CONFIG.video;
   bgVideoEl.classList.add('is-active');
 
-  // الفيديو يفضل ثابت على أول فريم لحد ما المستخدم يبدأ يسكرول.
-  // اللعبة play/pause دي بس عشان متصفحات الموبايل (سفاري بالأخص)
-  // تحمّل أول فريم فعليًا، مش عشان الفيديو يلف لوحده.
-bgVideoEl.addEventListener('loadedmetadata', () => {
-  videoReady = true;
-
-  bgVideoEl.play().catch(err => {
-    console.log(err);
+  bgVideoEl.addEventListener('loadedmetadata', () => {
+    videoReady = true;
+    bgVideoEl.play().catch(err => {
+      console.log(err);
+    });
   });
-});
-  
+
 } else if (CONFIG.photo) {
   bgPhotoEl.style.backgroundImage = `url("${CONFIG.photo}")`;
   bgPhotoEl.classList.add('has-photo');
@@ -403,15 +408,10 @@ function sleep(ms){ return new Promise(resolve => setTimeout(resolve, ms)); }
 function buildNameSequence(){
   const seq = [];
   CONFIG.nameLeft.split('').forEach(ch => seq.push({ ch, cls: '' }));
-  seq.push({ ch: ' ', cls: 'amp' });
-  seq.push({ ch: '&', cls: 'amp' });
-  seq.push({ ch: ' ', cls: 'amp' });
   CONFIG.nameRight.split('').forEach(ch => seq.push({ ch, cls: '' }));
   return seq;
 }
 
-/* بيضيف كل حروف الاسم دفعة واحدة، كل حرف بتاخير بسيط عشان يظهر بشكل
-   زخرفي متتابع (بلور + رفعة خفيفة) مش زي كيرسور كيبورد بيكتب */
 function revealName(){
   const seq = buildNameSequence();
   const container = document.getElementById('nameSlot');
@@ -448,8 +448,7 @@ const flourishTopEl    = document.querySelector('.flourish-top');
 const flourishBottomEl = document.querySelector('.flourish-bottom');
 
 if (reduceMotion) {
-  document.getElementById('nameSlot').textContent = CONFIG.nameLeft + ' & ' + CONFIG.nameRight;
-  flourishTopEl.style.opacity = '1';
+  document.getElementById('nameSlot').textContent = CONFIG.nameLeft + CONFIG.nameRight;  flourishTopEl.style.opacity = '1';
   flourishBottomEl.style.opacity = '1';
   document.getElementById('dotsRow').classList.add('show');
   document.getElementById('nameRow').classList.add('show');
@@ -495,9 +494,7 @@ const sectionObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.25 });
 sectionObserver.observe(detailsSection);
 
-/* ---------- السكرول يتحكم في فريم الفيديو زي شريط فيديو حقيقي
-   (الفيديو ثابت، وموقع السكرول هو اللي يحدد الفريم المعروض)
-   مع حماية من اللاج: مفيش seek جديد إلا بعد ما اللي قبله يخلص ---------- */
+/* ---------- السكرول يتحكم في حجم/موضع الفيديو ---------- */
 const heroEl = document.querySelector('.hero');
 const heroOverlayEl = document.getElementById('heroOverlay');
 const bgLayer = bgVideoEl.classList.contains('is-active')
@@ -542,10 +539,25 @@ if (!reduceMotion) {
   updateOnScroll();
 }
 
- const weddingDate = new Date("August 30, 2026 15:37:25").getTime();
-      /* ================= COUNTDOWN ================= */ 
-      function updateCountdown(){ 
-      const now = new Date().getTime(); const distance = weddingDate - now; const days = Math.floor(distance / (1000*60*60*24)); const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60)); const minutes = Math.floor((distance % (1000*60*60)) / (1000*60)); const seconds = Math.floor((distance % (1000*60)) / 1000); document.getElementById("days").innerText = days; document.getElementById("hours").innerText = hours; document.getElementById("minutes").innerText = minutes; document.getElementById("seconds").innerText = seconds; if(distance < 0){ clearInterval(timer); document.querySelector(".countdown").innerHTML = "<h2 style='color:#d9a44c'>❤ The Celebration Has Begun ❤</h2>"; } } const timer = setInterval(updateCountdown, 1000); updateCountdown();     
+const weddingDate = new Date("August 30, 2026 15:37:25").getTime();
+function updateCountdown(){
+  const now = new Date().getTime();
+  const distance = weddingDate - now;
+  const days = Math.floor(distance / (1000*60*60*24));
+  const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+  const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+  const seconds = Math.floor((distance % (1000*60)) / 1000);
+  document.getElementById("days").innerText = days;
+  document.getElementById("hours").innerText = hours;
+  document.getElementById("minutes").innerText = minutes;
+  document.getElementById("seconds").innerText = seconds;
+  if(distance < 0){
+    clearInterval(timer);
+    document.querySelector(".countdown").innerHTML = "<h2 style='color:#b08d57'>❤ بدأ الاحتفال ❤</h2>";
+  }
+}
+const timer = setInterval(updateCountdown, 1000);
+updateCountdown();
 </script>
 </body>
-</html>```
+</html>
